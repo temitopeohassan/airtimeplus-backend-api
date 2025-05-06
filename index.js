@@ -40,7 +40,7 @@ mongoose.connect(mongoUri, {
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 app.get('/', (req, res) => {
-    res.send('<h1>AirtimePlus Server Is Running</h1>');
+    res.send('<h1>AirtimePlus Backend API Server Is Running</h1>');
   });  
 
 // Optional: Create a new Verify service (you can call this once to generate a new service)
