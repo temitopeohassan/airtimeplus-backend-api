@@ -12,6 +12,13 @@
               "usdc_value": 1.25
             },
             {
+              "network_operator": "MTN",
+              "operator_id": "NG-MTN-001",
+              "amount": 100,
+              "currency": "NGN",
+              "usdc_value": 0.1
+            },
+            {
               "network_operator": "Airtel",
               "operator_id": "NG-AIR-002",
               "amount": 500,
