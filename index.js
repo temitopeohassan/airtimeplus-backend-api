@@ -13,9 +13,14 @@ const app = express();
 
 // Configure CORS with specific options
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://airtimeplus-miniapp.vercel.app/'], // Add your frontend URLs
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:8080',
+    'https://airtimeplus-miniapp.vercel.app'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform'],
   credentials: true
 }));
 
