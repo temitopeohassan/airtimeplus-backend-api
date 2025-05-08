@@ -10,7 +10,15 @@ const servicesData = require('./data.json'); // Import JSON data
 require('dotenv').config();
 
 const app = express();
-app.use(cors()); // Enable CORS for all routes
+
+// Configure CORS with specific options
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://airtimeplus-miniapp.vercel.app/'], // Add your frontend URLs
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(express.json()); // Parse JSON bodies
 
 // Debug environment variables
