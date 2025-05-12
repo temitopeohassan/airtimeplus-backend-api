@@ -123,7 +123,7 @@ async function getReloadlyToken() {
       client_id: process.env.RELOADLY_CLIENT_ID,
       client_secret: process.env.RELOADLY_CLIENT_SECRET,
       grant_type: 'client_credentials',
-      audience: 'https://topups-sandbox.reloadly.com/'
+      audience: 'https://topups-sandbox.reloadly.com'
     })
   };
 
@@ -133,7 +133,7 @@ async function getReloadlyToken() {
       client_id: process.env.RELOADLY_CLIENT_ID ? 'Set' : 'Not set',
       client_secret: process.env.RELOADLY_CLIENT_SECRET ? 'Set' : 'Not set',
       grant_type: 'client_credentials',
-      audience: 'https://topups-sandbox.reloadly.com/'
+      audience: 'https://topups-sandbox.reloadly.com'
     });
 
     const response = await fetch(url, options);
@@ -173,34 +173,58 @@ app.post('/send-topup', async (req, res) => {
     recipientEmail
   });
 
-  const url = 'https://topups-sandbox.reloadly.com/topups';
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/com.reloadly.topups-v1+json',
-      Authorization: `Bearer ${await getReloadlyToken()}`,
-    },
-    body: JSON.stringify({
-      operatorId: operatorId || '535',
-      amount: amount || '5.00',
-      useLocalAmount: true,
-      customIdentifier: 'This is example identifier 130',
-      recipientEmail: recipientEmail || 'peter@nauta.com.cu',
-      recipientPhone: recipientPhone || { countryCode: 'GB', number: '447951731337' },
-      senderPhone: senderPhone || { countryCode: 'CA', number: '11231231231' }
-    })
-  };
-
   try {
+    // Get fresh authentication token
+    const accessToken = await getReloadlyToken();
+    if (!accessToken) {
+      throw new Error('Failed to get authentication token');
+    }
+
+    const url = 'https://topups-sandbox.reloadly.com/topups';
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/com.reloadly.topups-v1+json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({
+        operatorId,
+        amount,
+        useLocalAmount: true,
+        recipientEmail,
+        recipientPhone: {
+          countryCode: 'NG',
+          number: recipientPhone
+        },
+        senderPhone: {
+          countryCode: 'NG',
+          number: senderPhone
+        }
+      })
+    };
+
     console.log('🔄 Sending request to Reloadly API...');
     const response = await fetch(url, options);
     const data = await response.json();
+
+    if (!response.ok) {
+      console.error('❌ Reloadly API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: data
+      });
+      throw new Error(data.message || 'Failed to process topup');
+    }
+
     console.log('✅ Reloadly API response:', JSON.stringify(data, null, 2));
     res.json(data);
   } catch (err) {
     console.error('❌ Error processing top-up:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ 
+      error: 'Failed to process topup',
+      details: err.message 
+    });
   }
 });
 
