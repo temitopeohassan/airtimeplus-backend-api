@@ -117,19 +117,43 @@ async function getReloadlyToken() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
     body: JSON.stringify({
       client_id: process.env.RELOADLY_CLIENT_ID,
       client_secret: process.env.RELOADLY_CLIENT_SECRET,
       grant_type: 'client_credentials',
-    }),
+      audience: 'https://topups-sandbox.reloadly.com/'
+    })
   };
 
   try {
     console.log('🔄 Getting fresh authentication token from Reloadly...');
+    console.log('📦 Request body:', {
+      client_id: process.env.RELOADLY_CLIENT_ID ? 'Set' : 'Not set',
+      client_secret: process.env.RELOADLY_CLIENT_SECRET ? 'Set' : 'Not set',
+      grant_type: 'client_credentials',
+      audience: 'https://topups-sandbox.reloadly.com/'
+    });
+
     const response = await fetch(url, options);
     const data = await response.json();
-    console.log('✅ Reloadly authentication token:', data.access_token);
+
+    if (!response.ok) {
+      console.error('❌ Reloadly authentication failed:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: data
+      });
+      throw new Error(`Authentication failed: ${data.message || 'Unknown error'}`);
+    }
+
+    if (!data.access_token) {
+      console.error('❌ No access token in response:', data);
+      throw new Error('No access token received from Reloadly');
+    }
+
+    console.log('✅ Reloadly authentication successful');
     return data.access_token;
   } catch (err) {
     console.error('❌ Error getting Reloadly authentication token:', err.message);
@@ -149,7 +173,7 @@ app.post('/send-topup', async (req, res) => {
     recipientEmail
   });
 
-  const url = 'https://topups.reloadly.com/topups';
+  const url = 'https://topups-sandbox.reloadly.com/topups';
   const options = {
     method: 'POST',
     headers: {
