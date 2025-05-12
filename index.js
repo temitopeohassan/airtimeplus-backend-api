@@ -2,12 +2,35 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
-const twilio = require('twilio');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const UserInfo = require('./models/UserInfo');
-const servicesData = require('./data.json'); // Import JSON data
+const servicesData = require('./data.json');
 require('dotenv').config();
+
+// Validate required environment variables
+const requiredEnvVars = {
+  API_CLIENT_ID: process.env.API_CLIENT_ID,
+  API_CLIENT_SECRET: process.env.API_CLIENT_SECRET,
+  MONGODB_URI: process.env.MONGODB_URI
+};
+
+// Check for missing environment variables
+const missingEnvVars = Object.entries(requiredEnvVars)
+  .filter(([_, value]) => !value)
+  .map(([key]) => key);
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingEnvVars);
+  process.exit(1);
+}
+
+// Log environment variables status (without exposing values)
+console.log('✅ Environment variables loaded:', {
+  API_CLIENT_ID: requiredEnvVars.API_CLIENT_ID ? '✓ Set' : '✗ Missing',
+  API_CLIENT_SECRET: requiredEnvVars.API_CLIENT_SECRET ? '✓ Set' : '✗ Missing',
+  MONGODB_URI: requiredEnvVars.MONGODB_URI ? '✓ Set' : '✗ Missing'
+});
 
 const app = express();
 
@@ -26,34 +49,6 @@ app.use(cors({
 
 app.use(express.json()); // Parse JSON bodies
 
-// Validate required environment variables
-const requiredEnvVars = {
-  RELOADLY_CLIENT_ID: process.env.RELOADLY_CLIENT_ID,
-  RELOADLY_CLIENT_SECRET: process.env.RELOADLY_CLIENT_SECRET,
-  MONGODB_URI: process.env.MONGODB_URI,
-  TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
-  TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN
-};
-
-// Check for missing environment variables
-const missingEnvVars = Object.entries(requiredEnvVars)
-  .filter(([_, value]) => !value)
-  .map(([key]) => key);
-
-if (missingEnvVars.length > 0) {
-  console.error('❌ Missing required environment variables:', missingEnvVars);
-  process.exit(1);
-}
-
-// Log environment variables status (without exposing values)
-console.log('✅ Environment variables loaded:', {
-  RELOADLY_CLIENT_ID: requiredEnvVars.RELOADLY_CLIENT_ID ? '✓ Set' : '✗ Missing',
-  RELOADLY_CLIENT_SECRET: requiredEnvVars.RELOADLY_CLIENT_SECRET ? '✓ Set' : '✗ Missing',
-  MONGODB_URI: requiredEnvVars.MONGODB_URI ? '✓ Set' : '✗ Missing',
-  TWILIO_ACCOUNT_SID: requiredEnvVars.TWILIO_ACCOUNT_SID ? '✓ Set' : '✗ Missing',
-  TWILIO_AUTH_TOKEN: requiredEnvVars.TWILIO_AUTH_TOKEN ? '✓ Set' : '✗ Missing'
-});
-
 // MongoDB Connection
 const mongoUri = process.env.MONGODB_URI;
 console.log('Attempting to connect to MongoDB...');
@@ -66,8 +61,6 @@ mongoose.connect(mongoUri, {
 }).catch(err => {
   console.error('MongoDB connection error details:', err);
 });
-
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 // Root route
 app.get('/', (req, res) => {
@@ -82,57 +75,10 @@ app.get('/services-data', (req, res) => {
   res.json(servicesData);
 });
 
-// Twilio: Create verify service
-app.get('/create-service', async (req, res) => {
-  console.log('📡 GET /create-service - Creating verify service');
-  try {
-    const service = await client.verify.v2.services.create({
-      friendlyName: 'My First Verify Service',
-    });
-    console.log('✅ Verify service created:', service.sid);
-    res.json({ sid: service.sid });
-  } catch (err) {
-    console.error('❌ Error creating verify service:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Twilio: Send verification code
-app.post('/send-verification', async (req, res) => {
-  const { to } = req.body;
-  console.log('📡 POST /send-verification - Sending verification to:', to);
-  try {
-    const verification = await client.verify.v2
-      .services(process.env.VERIFY_SERVICE_SID)
-      .verifications.create({ channel: 'sms', to });
-    console.log('✅ Verification sent:', verification.status);
-    res.json({ status: verification.status });
-  } catch (err) {
-    console.error('❌ Error sending verification:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Twilio: Check verification code
-app.post('/check-verification', async (req, res) => {
-  const { to, code } = req.body;
-  console.log('📡 POST /check-verification - Checking verification for:', to);
-  try {
-    const verificationCheck = await client.verify.v2
-      .services(process.env.VERIFY_SERVICE_SID)
-      .verificationChecks.create({ to, code });
-    console.log('✅ Verification check result:', verificationCheck.status);
-    res.json({ status: verificationCheck.status });
-  } catch (err) {
-    console.error('❌ Error checking verification:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Reloadly: Get fresh authentication token
+// Get fresh authentication token
 async function getReloadlyToken() {
-  if (!process.env.RELOADLY_CLIENT_ID || !process.env.RELOADLY_CLIENT_SECRET) {
-    throw new Error('Reloadly credentials are not properly configured');
+  if (!process.env.API_CLIENT_ID || !process.env.API_CLIENT_SECRET) {
+    throw new Error('API credentials are not properly configured');
   }
 
   const url = 'https://auth.reloadly.com/oauth/token';
@@ -143,21 +89,21 @@ async function getReloadlyToken() {
       'Accept': 'application/json'
     },
     body: JSON.stringify({
-      client_id: process.env.RELOADLY_CLIENT_ID,
-      client_secret: process.env.RELOADLY_CLIENT_SECRET,
+      client_id: process.env.API_CLIENT_ID,
+      client_secret: process.env.API_CLIENT_SECRET,
       grant_type: 'client_credentials',
       audience: 'https://topups-sandbox.reloadly.com'
     })
   };
 
   try {
-    console.log('🔄 Getting fresh authentication token from Reloadly...');
+    console.log('🔄 Getting fresh authentication token...');
     
     const response = await fetch(url, options);
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('❌ Reloadly authentication failed:', {
+      console.error('❌ Authentication failed:', {
         status: response.status,
         statusText: response.statusText,
         error: data
@@ -167,18 +113,18 @@ async function getReloadlyToken() {
 
     if (!data.access_token) {
       console.error('❌ No access token in response:', data);
-      throw new Error('No access token received from Reloadly');
+      throw new Error('No access token received');
     }
 
-    console.log('✅ Reloadly authentication successful');
+    console.log('✅ Authentication successful');
     return data.access_token;
   } catch (err) {
-    console.error('❌ Error getting Reloadly authentication token:', err.message);
+    console.error('❌ Error getting authentication token:', err.message);
     throw err;
   }
 }
 
-// Reloadly: Send airtime top-up
+// Send airtime top-up
 app.post('/send-topup', async (req, res) => {
   const { operatorId, amount, recipientPhone, senderPhone, recipientEmail } = req.body;
   console.log('📡 POST /send-topup - Processing top-up request');
@@ -221,12 +167,12 @@ app.post('/send-topup', async (req, res) => {
       })
     };
 
-    console.log('🔄 Sending request to Reloadly API...');
+    console.log('🔄 Sending request to API...');
     const response = await fetch(url, options);
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('❌ Reloadly API error:', {
+      console.error('❌ API error:', {
         status: response.status,
         statusText: response.statusText,
         error: data
@@ -234,7 +180,7 @@ app.post('/send-topup', async (req, res) => {
       throw new Error(data.message || 'Failed to process topup');
     }
 
-    console.log('✅ Reloadly API response:', JSON.stringify(data, null, 2));
+    console.log('✅ API response:', JSON.stringify(data, null, 2));
     res.json(data);
   } catch (err) {
     console.error('❌ Error processing top-up:', err.message);
