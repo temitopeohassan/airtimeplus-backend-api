@@ -31,6 +31,8 @@ console.log('Environment variables loaded:', {
   mongoDbUri: process.env.MONGODB_URI ? 'Set' : 'Not set',
   twilioAccountSid: process.env.TWILIO_ACCOUNT_SID ? 'Set' : 'Not set',
   twilioAuthToken: process.env.TWILIO_AUTH_TOKEN ? 'Set' : 'Not set',
+  reloadlyClientId: process.env.RELOADLY_CLIENT_ID ? 'Set' : 'Not set',
+  reloadlyClientSecret: process.env.RELOADLY_CLIENT_SECRET ? 'Set' : 'Not set',
 });
 
 // MongoDB Connection
@@ -108,6 +110,33 @@ app.post('/check-verification', async (req, res) => {
   }
 });
 
+// Reloadly: Get fresh authentication token
+async function getReloadlyToken() {
+  const url = 'https://auth.reloadly.com/oauth/token';
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      client_id: process.env.RELOADLY_CLIENT_ID,
+      client_secret: process.env.RELOADLY_CLIENT_SECRET,
+      grant_type: 'client_credentials',
+    }),
+  };
+
+  try {
+    console.log('🔄 Getting fresh authentication token from Reloadly...');
+    const response = await fetch(url, options);
+    const data = await response.json();
+    console.log('✅ Reloadly authentication token:', data.access_token);
+    return data.access_token;
+  } catch (err) {
+    console.error('❌ Error getting Reloadly authentication token:', err.message);
+    throw err;
+  }
+}
+
 // Reloadly: Send airtime top-up
 app.post('/send-topup', async (req, res) => {
   const { operatorId, amount, recipientPhone, senderPhone, recipientEmail } = req.body;
@@ -120,13 +149,13 @@ app.post('/send-topup', async (req, res) => {
     recipientEmail
   });
 
-  const url = 'https://topups-sandbox.reloadly.com/topups';
+  const url = 'https://topups.reloadly.com/topups';
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/com.reloadly.topups-v1+json',
-      Authorization: `Bearer ${process.env.RELOADLY_AUTH_TOKEN}`
+      Authorization: `Bearer ${await getReloadlyToken()}`,
     },
     body: JSON.stringify({
       operatorId: operatorId || '535',
