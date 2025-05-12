@@ -26,13 +26,32 @@ app.use(cors({
 
 app.use(express.json()); // Parse JSON bodies
 
-// Debug environment variables
-console.log('Environment variables loaded:', {
-  mongoDbUri: process.env.MONGODB_URI ? 'Set' : 'Not set',
-  twilioAccountSid: process.env.TWILIO_ACCOUNT_SID ? 'Set' : 'Not set',
-  twilioAuthToken: process.env.TWILIO_AUTH_TOKEN ? 'Set' : 'Not set',
-  reloadlyClientId: process.env.RELOADLY_CLIENT_ID ? 'Set' : 'Not set',
-  reloadlyClientSecret: process.env.RELOADLY_CLIENT_SECRET ? 'Set' : 'Not set',
+// Validate required environment variables
+const requiredEnvVars = {
+  RELOADLY_CLIENT_ID: process.env.RELOADLY_CLIENT_ID,
+  RELOADLY_CLIENT_SECRET: process.env.RELOADLY_CLIENT_SECRET,
+  MONGODB_URI: process.env.MONGODB_URI,
+  TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN
+};
+
+// Check for missing environment variables
+const missingEnvVars = Object.entries(requiredEnvVars)
+  .filter(([_, value]) => !value)
+  .map(([key]) => key);
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingEnvVars);
+  process.exit(1);
+}
+
+// Log environment variables status (without exposing values)
+console.log('✅ Environment variables loaded:', {
+  RELOADLY_CLIENT_ID: requiredEnvVars.RELOADLY_CLIENT_ID ? '✓ Set' : '✗ Missing',
+  RELOADLY_CLIENT_SECRET: requiredEnvVars.RELOADLY_CLIENT_SECRET ? '✓ Set' : '✗ Missing',
+  MONGODB_URI: requiredEnvVars.MONGODB_URI ? '✓ Set' : '✗ Missing',
+  TWILIO_ACCOUNT_SID: requiredEnvVars.TWILIO_ACCOUNT_SID ? '✓ Set' : '✗ Missing',
+  TWILIO_AUTH_TOKEN: requiredEnvVars.TWILIO_AUTH_TOKEN ? '✓ Set' : '✗ Missing'
 });
 
 // MongoDB Connection
@@ -112,6 +131,10 @@ app.post('/check-verification', async (req, res) => {
 
 // Reloadly: Get fresh authentication token
 async function getReloadlyToken() {
+  if (!process.env.RELOADLY_CLIENT_ID || !process.env.RELOADLY_CLIENT_SECRET) {
+    throw new Error('Reloadly credentials are not properly configured');
+  }
+
   const url = 'https://auth.reloadly.com/oauth/token';
   const options = {
     method: 'POST',
@@ -129,13 +152,7 @@ async function getReloadlyToken() {
 
   try {
     console.log('🔄 Getting fresh authentication token from Reloadly...');
-    console.log('📦 Request body:', {
-      client_id: process.env.RELOADLY_CLIENT_ID ? 'Set' : 'Not set',
-      client_secret: process.env.RELOADLY_CLIENT_SECRET ? 'Set' : 'Not set',
-      grant_type: 'client_credentials',
-      audience: 'https://topups-sandbox.reloadly.com'
-    });
-
+    
     const response = await fetch(url, options);
     const data = await response.json();
 
