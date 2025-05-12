@@ -9,21 +9,83 @@
               "operator_id": "NG-MTN-001",
               "amount": 1000,
               "currency": "NGN",
-              "usdc_value": 1.25
+              "usdc_value": 1.00
+            },{
+              "network_operator": "MTN",
+              "operator_id": "NG-MTN-001",
+              "amount": 500,
+              "currency": "NGN",
+              "usdc_value": 0.50
+            },
+            {
+              "network_operator": "MTN",
+              "operator_id": "NG-MTN-001",
+              "amount": 200,
+              "currency": "NGN",
+              "usdc_value": 0.20
             },
             {
               "network_operator": "MTN",
               "operator_id": "NG-MTN-001",
               "amount": 100,
               "currency": "NGN",
-              "usdc_value": 0.1
+              "usdc_value": 0.10
             },
             {
               "network_operator": "Airtel",
               "operator_id": "NG-AIR-002",
               "amount": 500,
               "currency": "NGN",
-              "usdc_value": 0.63
+              "usdc_value": 0.50
+            },
+            {
+              "network_operator": "Airtel",
+              "operator_id": "NG-AIR-002",
+              "amount": 200,
+              "currency": "NGN",
+              "usdc_value": 0.20
+            },{
+              "network_operator": "Airtel",
+              "operator_id": "NG-AIR-002",
+              "amount": 100,
+              "currency": "NGN",
+              "usdc_value": 0.10
+            },{
+              "network_operator": "Glo",
+              "operator_id": "NG-GLO-003",
+              "amount": 500,  
+              "currency": "NGN",
+              "usdc_value": 0.50
+            },{
+              "network_operator": "Glo",
+              "operator_id": "NG-GLO-003",
+              "amount": 200,
+              "currency": "NGN",
+              "usdc_value": 0.20
+            },{
+              "network_operator": "Glo",
+              "operator_id": "NG-GLO-003",
+              "amount": 100,
+              "currency": "NGN",
+              "usdc_value": 0.10
+            },{
+              "network_operator": "9mobile",
+              "operator_id": "NG-9MO-004",
+              "amount": 500,
+              "currency": "NGN",
+              "usdc_value": 0.50
+            },{
+              "network_operator": "9mobile",
+              "operator_id": "NG-9MO-004",
+              "amount": 200,
+              "currency": "NGN",
+              "usdc_value": 0.20
+            },{
+              "network_operator": "9mobile",
+              "operator_id": "NG-9MO-004",
+              "amount": 100,
+              "currency": "NGN",
+              "usdc_value": 0.10
             }
           ]
         }
@@ -37,14 +99,26 @@
               "operator_id": "GH-MTN-001",
               "amount": 20,
               "currency": "GHS",
-              "usdc_value": 1.60
+              "usdc_value": 1.00
             },
             {
               "network_operator": "Vodafone",
               "operator_id": "GH-VOD-002",
               "amount": 10,
               "currency": "GHS",
-              "usdc_value": 0.80
+              "usdc_value": 0.50
+            },{
+              "network_operator": "Glo",
+              "operator_id": "GH-GLO-003",
+              "amount": 10,
+              "currency": "GHS",
+              "usdc_value": 0.50
+            },{
+              "network_operator": "AirtelTigo",
+              "operator_id": "GH-AIR-004",
+              "amount": 10,
+              "currency": "GHS",
+              "usdc_value": 0.50
             }
           ]
         }
@@ -58,14 +132,20 @@
               "operator_id": "KE-SAF-001",
               "amount": 200,
               "currency": "KES",
-              "usdc_value": 1.50
+              "usdc_value": 1.00
             },
             {
               "network_operator": "Airtel",
               "operator_id": "KE-AIR-002",
               "amount": 100,
               "currency": "KES",
-              "usdc_value": 0.75
+              "usdc_value": 0.50
+            },{
+              "network_operator": "Telkom",
+              "operator_id": "KE-TEL-003",
+              "amount": 100,
+              "currency": "KES",
+              "usdc_value": 0.50
             }
           ]
         }
@@ -79,14 +159,28 @@
               "operator_id": "ZA-VOD-001",
               "amount": 30,
               "currency": "ZAR",
-              "usdc_value": 1.60
+              "usdc_value": 1.75
+            },
+            {
+              "network_operator": "Cell C",
+              "operator_id": "ZA-CEL-002",
+              "amount": 30,
+              "currency": "ZAR",
+              "usdc_value": 1.75
+            },
+            {
+              "network_operator": "Telkom",
+              "operator_id": "ZA-TEL-003",
+              "amount": 30,
+              "currency": "ZAR",
+              "usdc_value": 1.75
             },
             {
               "network_operator": "MTN",
-              "operator_id": "ZA-MTN-002",
-              "amount": 50,
+              "operator_id": "ZA-MTN-004",
+              "amount": 30,
               "currency": "ZAR",
-              "usdc_value": 2.67
+              "usdc_value": 1.75
             }
           ]
         }
