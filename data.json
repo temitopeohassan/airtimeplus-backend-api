@@ -7,13 +7,13 @@
             {
               "network_operator": "MTN",
               "operator_id": "341",
-              "amount": 1000,
+              "amount": 1500,
               "currency": "NGN",
               "usdc_value": 1.00
             },{
               "network_operator": "MTN",
               "operator_id": "341",
-              "amount": 500,
+              "amount": 750,
               "currency": "NGN",
               "usdc_value": 0.50
             },
@@ -34,7 +34,7 @@
             {
               "network_operator": "Airtel",
               "operator_id": "342",
-              "amount": 500,
+              "amount": 750,
               "currency": "NGN",
               "usdc_value": 0.50
             },
@@ -53,7 +53,7 @@
             },{
               "network_operator": "Glo",
               "operator_id": "344",
-              "amount": 500,  
+              "amount": 750,  
               "currency": "NGN",
               "usdc_value": 0.50
             },{
@@ -71,7 +71,7 @@
             },{
               "network_operator": "9mobile",
               "operator_id": "340",
-              "amount": 500,
+              "amount": 750,
               "currency": "NGN",
               "usdc_value": 0.50
             },{
