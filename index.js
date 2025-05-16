@@ -41,13 +41,14 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:8080',
     'https://airtimeplus-app.vercel.app',
-    'https://airtimeplus-app.vercel.app/airtime',
     'https://airtimeplus.xyz',
     'https://airtimeplus-miniapp.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  exposedHeaders: ['Content-Length', 'Content-Type'],
+  credentials: false,
+  maxAge: 86400
 }));
 
 app.use(express.json()); // Parse JSON bodies
