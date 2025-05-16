@@ -92,7 +92,7 @@ async function getReloadlyToken() {
       client_id: process.env.API_CLIENT_ID,
       client_secret: process.env.API_CLIENT_SECRET,
       grant_type: 'client_credentials',
-      audience: 'https://topups-sandbox.reloadly.com'
+      audience: 'https://topups.reloadly.com'
     })
   };
 
@@ -143,7 +143,7 @@ app.post('/send-topup', async (req, res) => {
       throw new Error('Failed to get authentication token');
     }
 
-    const url = 'https://topups-sandbox.reloadly.com/topups';
+    const url = 'https://topups.reloadly.com/topups';
     const options = {
       method: 'POST',
       headers: {
