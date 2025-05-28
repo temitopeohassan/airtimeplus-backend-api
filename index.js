@@ -195,71 +195,38 @@ app.post('/send-topup', async (req, res) => {
   }
 });
 
-// Store or update user info
-app.post('/submit-user-info', async (req, res) => {
-  const { operatorId, recipientEmail, recipientPhone, senderPhone, walletAddress } = req.body;
-  console.log('📡 POST /submit-user-info - Processing user info submission');
-  console.log('📦 Request data:', {
-    operatorId,
-    recipientEmail,
-    recipientPhone,
-    senderPhone,
-    walletAddress
+
+// Submit transaction failure report
+app.post('/submit-failure-report', async (req, res) => {
+  const { tx_hash, address, usdc_amount, timestamp } = req.body;
+  console.log('📡 POST /submit-failure-report - Processing failure report');
+  console.log('📦 Failure Report Details:', {
+    transactionHash: tx_hash,
+    walletAddress: address,
+    usdcAmount: usdc_amount,
+    timestamp: timestamp
   });
 
   try {
-    let userInfo = await UserInfo.findOne({ walletAddress: walletAddress.toLowerCase() });
+    // Log the failure report to console
+    console.log('❌ Transaction Failure Report:');
+    console.log('----------------------------------------');
+    console.log(`Transaction Hash: ${tx_hash}`);
+    console.log(`Wallet Address: ${address}`);
+    console.log(`USDC Amount: ${usdc_amount}`);
+    console.log(`Timestamp: ${timestamp}`);
+    console.log('----------------------------------------');
 
-    if (userInfo) {
-      console.log('📝 Updating existing user info for wallet:', walletAddress);
-      userInfo.operatorId = operatorId;
-      userInfo.recipientEmail = recipientEmail;
-      userInfo.recipientPhone = recipientPhone;
-      userInfo.senderPhone = senderPhone;
-      await userInfo.save();
-    } else {
-      console.log('📝 Creating new user info for wallet:', walletAddress);
-      userInfo = await UserInfo.create({
-        walletAddress: walletAddress.toLowerCase(),
-        operatorId,
-        recipientEmail,
-        recipientPhone,
-        senderPhone
-      });
-    }
-
-    console.log('✅ User info saved successfully');
-    res.status(201).json({ message: 'User info saved', userInfo });
+    res.status(200).json({ 
+      message: 'Failure report received successfully',
+      receivedAt: new Date().toISOString()
+    });
   } catch (err) {
-    console.error('❌ Error saving user info:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Get all user info
-app.get('/user-info', async (req, res) => {
-  console.log('📡 GET /user-info - Fetching all user info');
-  try {
-    const users = await UserInfo.find().sort({ createdAt: -1 });
-    console.log(`✅ Found ${users.length} users`);
-    res.json(users);
-  } catch (err) {
-    console.error('❌ Error fetching user info:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Get user info by wallet address
-app.get('/user-info/:walletAddress', async (req, res) => {
-  const { walletAddress } = req.params;
-  console.log('📡 GET /user-info/:walletAddress - Fetching user info for wallet:', walletAddress);
-  try {
-    const user = await UserInfo.findOne({ walletAddress: walletAddress.toLowerCase() });
-    console.log('✅ User info found:', user ? 'Yes' : 'No');
-    res.json(user || null);
-  } catch (err) {
-    console.error('❌ Error fetching user info:', err.message);
-    res.status(500).json({ error: err.message });
+    console.error('❌ Error processing failure report:', err.message);
+    res.status(500).json({ 
+      error: 'Failed to process failure report',
+      details: err.message 
+    });
   }
 });
 

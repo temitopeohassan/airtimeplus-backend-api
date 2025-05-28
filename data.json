@@ -1,177 +1,210 @@
 {
-    "countries": [
-      {
-        "name": "Nigeria",
-        "services": {
-          "airtime": [
-            {
-              "network_operator": "MTN",
-              "operator_id": "341",
-              "amount": 1500,
-              "currency": "NGN",
-              "usdc_value": 1.00
-            },{
-              "network_operator": "MTN",
-              "operator_id": "341",
-              "amount": 750,
-              "currency": "NGN",
-              "usdc_value": 0.50
-            },
-            {
-              "network_operator": "MTN",
-              "operator_id": "341",
-              "amount": 200,
-              "currency": "NGN",
-              "usdc_value": 0.15
-            },
-            {
-              "network_operator": "MTN",
-              "operator_id": "341",
-              "amount": 100,
-              "currency": "NGN",
-              "usdc_value": 0.10
-            },
-            {
-              "network_operator": "Airtel",
-              "operator_id": "342",
-              "amount": 750,
-              "currency": "NGN",
-              "usdc_value": 0.50
-            },
-            {
-              "network_operator": "Airtel",
-              "operator_id": "342",
-              "amount": 200,
-              "currency": "NGN",
-              "usdc_value": 0.15
-            },{
-              "network_operator": "Airtel",
-              "operator_id": "342",
-              "amount": 100,
-              "currency": "NGN",
-              "usdc_value": 0.10
-            },{
-              "network_operator": "Glo",
-              "operator_id": "344",
-              "amount": 750,  
-              "currency": "NGN",
-              "usdc_value": 0.50
-            },{
-              "network_operator": "Glo",
-              "operator_id": "344",
-              "amount": 200,
-              "currency": "NGN",
-              "usdc_value": 0.15
-            },{
-              "network_operator": "Glo",
-              "operator_id": "344",
-              "amount": 100,
-              "currency": "NGN",
-              "usdc_value": 0.10
-            },{
-              "network_operator": "9mobile",
-              "operator_id": "340",
-              "amount": 750,
-              "currency": "NGN",
-              "usdc_value": 0.50
-            },{
-              "network_operator": "9mobile",
-              "operator_id": "340",
-              "amount": 200,
-              "currency": "NGN",
-              "usdc_value": 0.15
-            },{
-              "network_operator": "9mobile",
-              "operator_id": "340",
-              "amount": 100,
-              "currency": "NGN",
-              "usdc_value": 0.10
-            }
-          ]
-        }
-      },
-      {
-        "name": "Ghana",
-        "services": {
-          "airtime": [
-            {
-              "network_operator": "MTN",
-              "operator_id": "150",
-              "amount": 20,
-              "currency": "GHS",
-              "usdc_value": 1.00
-            },
-            {
-              "network_operator": "Telecel",
-              "operator_id": "155",
-              "amount": 20,
-              "currency": "GHS",
-              "usdc_value": 1.00
-            },{
-              "network_operator": "Airtel-Tigo",
-              "operator_id": "153",
-              "amount": 20,
-              "currency": "GHS",
-              "usdc_value": 1.00
-            }
-          ]
-        }
-      },
-      {
-        "name": "Kenya",
-        "services": {
-          "airtime": [
-            {
-              "network_operator": "Safaricom",
-              "operator_id": "266",
-              "amount": 200,
-              "currency": "KES",
-              "usdc_value": 1.00
-            },
-            {
-              "network_operator": "Airtel",
-              "operator_id": "265",
-              "amount": 200,
-              "currency": "KES",
-              "usdc_value": 1.00
-            },{
-              "network_operator": "Telkom",
-              "operator_id": "264",
-              "amount": 200,
-              "currency": "KES",
-              "usdc_value": 1.00
-            }
-          ]
-        }
-      },
-      {
-        "name": "South Africa",
-        "services": {
-          "airtime": [
-            {
-              "network_operator": "Vodacom",
-              "operator_id": "438",
-              "amount": 30,
-              "currency": "ZAR",
-              "usdc_value": 1.75
-            },
-            {
-              "network_operator": "Cell C",
-              "operator_id": "435",
-              "amount": 30,
-              "currency": "ZAR",
-              "usdc_value": 1.75
-            },
-            {
-              "network_operator": "MTN",
-              "operator_id": "440",
-              "amount": 30,
-              "currency": "ZAR",
-              "usdc_value": 1.75
-            }
-          ]
-        }
+  "countries": [
+    {
+      "name": "Nigeria",
+      "exchange_rate": 1300,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "MTN",
+            "operator_id": "341",
+            "currency": "NGN"
+          },
+          {
+            "network_operator": "Airtel",
+            "operator_id": "342",
+            "currency": "NGN"
+          },
+          {
+            "network_operator": "Glo",
+            "operator_id": "344",
+            "currency": "NGN"
+          },
+          {
+            "network_operator": "9mobile",
+            "operator_id": "340",
+            "currency": "NGN"
+          }
+        ]
       }
-    ]
-  }
-  
+    },
+    {
+      "name": "Ghana",
+      "exchange_rate": 11,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "MTN",
+            "operator_id": "150",
+            "currency": "GHS"
+          },
+          {
+            "network_operator": "Telecel",
+            "operator_id": "155",
+            "currency": "GHS"
+          },
+          {
+            "network_operator": "Airtel-Tigo",
+            "operator_id": "153",
+            "currency": "GHS"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Kenya",
+      "exchange_rate": 105,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "Safaricom",
+            "operator_id": "266",
+            "currency": "KES"
+          },
+          {
+            "network_operator": "Airtel",
+            "operator_id": "265",
+            "currency": "KES"
+          },
+          {
+            "network_operator": "Telkom",
+            "operator_id": "264",
+            "currency": "KES"
+          }
+        ]
+      }
+    },
+    {
+      "name": "South Africa",
+      "exchange_rate": 15,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "Vodacom",
+            "operator_id": "438",
+            "currency": "ZAR"
+          },
+          {
+            "network_operator": "Cell C",
+            "operator_id": "435",
+            "currency": "ZAR"
+          },
+          {
+            "network_operator": "MTN",
+            "operator_id": "440",
+            "currency": "ZAR"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tanzania",
+      "exchange_rate": 2100,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "Airtel Tanzania",
+            "operator_id": "489",
+            "currency": "TZS"
+          },
+          {
+            "network_operator": "Halotel Tanzania",
+            "operator_id": "490",
+            "currency": "TZS"
+          },
+          {
+            "network_operator": "Zantel Tanzania",
+            "operator_id": "493",
+            "currency": "TZS"
+          },
+          {
+            "network_operator": "Vodacom Tanzania",
+            "operator_id": "494",
+            "currency": "TZS"
+          },
+          {
+            "network_operator": "Tigo Tanzania",
+            "operator_id": "495",
+            "currency": "TZS"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Indonesia",
+      "exchange_rate": 12700,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "SmartFren Indonesia",
+            "operator_id": "234",
+            "currency": "IDR"
+          },
+          {
+            "network_operator": "Telkomsel Indonesia",
+            "operator_id": "235",
+            "currency": "IDR"
+          },
+          {
+            "network_operator": "Indosat Indonesia",
+            "operator_id": "237",
+            "currency": "IDR"
+          },
+          {
+            "network_operator": "XL Indonesia",
+            "operator_id": "239",
+            "currency": "IDR"
+          },
+          {
+            "network_operator": "Hutchison 3 Indonesia",
+            "operator_id": "240",
+            "currency": "IDR"
+          },
+          {
+            "network_operator": "Axis Indonesia",
+            "operator_id": "243",
+            "currency": "IDR"
+          },
+          {
+            "network_operator": "Bakrie Telecom Indonesia",
+            "operator_id": "692",
+            "currency": "IDR"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vietnam",
+      "exchange_rate": 17000,
+      "services": {
+        "airtime": [
+          {
+            "network_operator": "Viettel Mobile Vietnam",
+            "operator_id": "599",
+            "currency": "VND"
+          },
+          {
+            "network_operator": "Mobile Vietnam",
+            "operator_id": "600",
+            "currency": "VND"
+          },
+          {
+            "network_operator": "Vinaphone Vietnam",
+            "operator_id": "601",
+            "currency": "VND"
+          },
+          {
+            "network_operator": "Gmobile Vietnam",
+            "operator_id": "603",
+            "currency": "VND"
+          },
+          {
+            "network_operator": "Mobifone Vietnam",
+            "operator_id": "605",
+            "currency": "VND"
+          }
+        ]
+      }
+    }
+  ]
+}
