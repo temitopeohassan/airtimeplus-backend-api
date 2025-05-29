@@ -162,7 +162,7 @@ app.post('/send-topup', async (req, res) => {
         useLocalAmount: true,
         recipientEmail,
         recipientPhone: {
-          countryCode: selectedCountry.country_code,
+          countryCode: country_code,
           number: recipientPhone
         },
         senderPhone: {
