@@ -130,14 +130,15 @@ async function getReloadlyToken() {
 
 // Send airtime top-up
 app.post('/send-topup', async (req, res) => {
-  const { operatorId, amount, recipientPhone, senderPhone, recipientEmail } = req.body;
+  const { operatorId, amount, recipientPhone, senderPhone, recipientEmail, selectedCountry } = req.body;
   console.log('📡 POST /send-topup - Processing top-up request');
   console.log('📦 Request data:', {
     operatorId,
     amount,
     recipientPhone,
     senderPhone,
-    recipientEmail
+    recipientEmail,
+    selectedCountry
   });
 
   try {
@@ -161,7 +162,7 @@ app.post('/send-topup', async (req, res) => {
         useLocalAmount: true,
         recipientEmail,
         recipientPhone: {
-          countryCode: 'NG',
+          countryCode: selectedCountry.country_code,
           number: recipientPhone
         },
         senderPhone: {

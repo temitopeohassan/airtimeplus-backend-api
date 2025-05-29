@@ -2,6 +2,7 @@
   "countries": [
     {
       "name": "Nigeria",
+      "country_code": "NG",
       "exchange_rate": 1300,
       "services": {
         "airtime": [
@@ -30,6 +31,7 @@
     },
     {
       "name": "Ghana",
+      "country_code": "GH",
       "exchange_rate": 11,
       "services": {
         "airtime": [
@@ -53,6 +55,7 @@
     },
     {
       "name": "Kenya",
+      "country_code": "KE",
       "exchange_rate": 105,
       "services": {
         "airtime": [
@@ -76,6 +79,7 @@
     },
     {
       "name": "South Africa",
+      "country_code": "ZA",
       "exchange_rate": 15,
       "services": {
         "airtime": [
@@ -99,6 +103,7 @@
     },
     {
       "name": "Tanzania",
+      "country_code": "TZ",
       "exchange_rate": 2100,
       "services": {
         "airtime": [
@@ -132,6 +137,7 @@
     },
     {
       "name": "Indonesia",
+      "country_code": "ID",
       "exchange_rate": 12700,
       "services": {
         "airtime": [
@@ -175,6 +181,7 @@
     },
     {
       "name": "Vietnam",
+      "country_code": "VN",
       "exchange_rate": 17000,
       "services": {
         "airtime": [
